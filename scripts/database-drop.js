@@ -13,13 +13,12 @@ console.log(`RUNNING: ${name} NODE_ENV=${environment}`);
 // SCRIPTS
 // --------------------------
 
-const dropUserTable = db.schema.dropTable("users");
-const dropOrganizationsTable = db.schema.dropTable("organizations");
+const dropUserTable = db.schema.dropTable("users").dropTable("sprints").dropTable("stories").dropTable("story_sprints");
 
 // --------------------------
 // RUN
 // --------------------------
 
-Promise.all([dropUserTable, dropOrganizationsTable]);
+Promise.all([dropUserTable]);
 
 console.log(`FINISHED: ${name} NODE_ENV=${environment} (⌘ + C to quit)`);

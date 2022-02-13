@@ -42,49 +42,22 @@ const deleteViewer = async () => {
   return alert(response.error);
 };
 
-const connectMetamask = async () => {
-  if (!window.ethereum) {
-    alert("Metamask is not installed");
+const createStory = async ({title}) => {
+  const body = {title}
+  let response = await Requests.post("/api/stories", body);
+  if (response.success) {
+    cookies.remove(Constants.SESSION_KEY);
+    return window.location.reload();
+  } else {
+    return alert(response.error);
   }
-
-  // NOTE(jim): Returns an array of ethereum addresses.
-  const response = await window.ethereum.request({
-    method: "eth_requestAccounts",
-  });
-
-  // NOTE(jim): Add a database record to associate centralized data to an address.
-  if (response && response.length) {
-    for await (const address of response) {
-      await Requests.post("/api/ethereum/create", { address });
-    }
-  }
-
-  return window.location.reload();
-};
-
-const connectPhantom = async () => {
-  let address = null;
-  try {
-    const response = await window.solana.connect();
-    address = response.publicKey.toString();
-  } catch (e) {
-    console.log(e);
-  }
-
-  // NOTE(jim): Add a database record to associate centralized data to an address.
-  if (!Strings.isEmpty(address)) {
-    await Requests.post("/api/solana/create", { address });
-  }
-
-  return window.location.reload();
-};
+}
 
 export const execute = async (key: string, body?: any) => {
   if (key === "SIGN_IN") return await signIn(body);
   if (key === "SIGN_OUT") return await signOut();
   if (key === "VIEWER_DELETE_USER") return await deleteViewer();
-  if (key === "VIEWER_CONNECT_METAMASK") return await connectMetamask();
-  if (key === "VIEWER_CONNECT_PHANTOM") return await connectPhantom();
+  if (key === "CREATE_STORY") return await createStory(body);
 
   return alert(`There is no action: ${key}`);
 };

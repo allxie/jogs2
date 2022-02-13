@@ -6,11 +6,10 @@ module.exports = {
       port: 1334,
       host: '127.0.0.1',
       // NOTE(jim): README.md value.
-      database: 'wwwdb',
+      database: 'jogsdb',
       // NOTE(jim): README.md value.
       user: 'admin',
       // NOTE(jim): README.md value.
-      password: 'oblivion'
     }
   },
   production: {

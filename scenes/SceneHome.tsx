@@ -26,7 +26,7 @@ const handleChange = (e, state, setState) => {
 };
 
 function SceneHome(props) {
-  const [state, setState] = React.useState({ email: "", password: "" });
+  const [state, setState] = React.useState({ email: "", password: "" , title: "" });
 
   let maybeRenderGoogleAuth =
     !props.viewer && !Strings.isEmpty(props.googleURL);
@@ -48,6 +48,23 @@ function SceneHome(props) {
       </Header>
       <Layout>
         <LayoutLeft>
+          {
+            <LineItem>
+              <Content>
+                <H2>Create Story</H2>
+                <Input
+                  autoComplete="off"
+                  value={state.title}
+                  placeholder="As a user..."
+                  name="title"
+                  onChange={(e) => handleChange(e, state, setState)}
+                />
+                <Button onClick={() => Actions.execute("CREATE_STORY", state)}>
+                  Create
+                </Button>
+              </Content>
+            </LineItem>
+          }
           {props.viewer && (
             <React.Fragment>
               <LineItem>
@@ -92,7 +109,6 @@ function SceneHome(props) {
             <LineItem>
               <Content>
                 <H2>Sign in</H2>
-
                 <P>
                   This is a traditional username and password sign in, if an
                   account exists it will check if the credentials are correct,
@@ -123,7 +139,6 @@ function SceneHome(props) {
               </Content>
             </LineItem>
           )}
-
           {maybeRenderGoogleAuth && (
             <LineItem>
               <Content>
@@ -152,116 +167,8 @@ function SceneHome(props) {
               </Content>
             </LineItem>
           )}
-
-          {props.state.isMetamaskEnabled && !window.ethereum.selectedAddress && (
-            <LineItem>
-              <Content>
-                <H2>Connect Metamask to {props.host}</H2>
-                <P>
-                  The user has Metamask installed in their browser. A user can
-                  now click the button below to connect their Ethereum address
-                  to {props.host}. This action will also create an Ethereum
-                  address entry in the Postgres table.
-                </P>
-                <Button
-                  onClick={() =>
-                    Actions.execute("VIEWER_CONNECT_METAMASK", state)
-                  }
-                >
-                  Connect Metamask
-                </Button>
-              </Content>
-            </LineItem>
-          )}
-
-          {props.state.isMetamaskEnabled && window.ethereum.selectedAddress && (
-            <LineItem>
-              <Content>
-                <H2>
-                  Metamask is connected and an Ethereum address is selected.
-                </H2>
-                <P>
-                  As the developer you could write some code that associates the
-                  Ethereum address with the authenticated user. However it is
-                  common advice to wait for an actual need.
-                </P>
-                <P>From this point on you can build your DAPP or DAO.</P>
-              </Content>
-            </LineItem>
-          )}
-
-          {props.state.isPhantomEnabled && !props.state.solana && (
-            <LineItem>
-              <Content>
-                <H2>Connect Phantom to {props.host}</H2>
-                <P>
-                  The user has Phantom installed in their browser. A user can
-                  now click the button below to connect their Solana address to{" "}
-                  {props.host}. This action will also create an Solana address
-                  entry in the Postgres table.
-                </P>
-                <Button
-                  onClick={() =>
-                    Actions.execute("VIEWER_CONNECT_PHANTOM", state)
-                  }
-                >
-                  Connect Phantom
-                </Button>
-              </Content>
-            </LineItem>
-          )}
-
-          {props.state.isPhantomEnabled && props.state.solana && (
-            <LineItem>
-              <Content>
-                <H2>
-                  Phantom is connected and the Solana address is selected.
-                </H2>
-                <P>
-                  As the developer you could write some code that associates the
-                  Solana address with the authenticated user. However it is
-                  common advice to wait for an actual need.
-                </P>
-              </Content>
-            </LineItem>
-          )}
-
-          {!props.state.isMetamaskEnabled && (
-            <LineItem>
-              <Content>
-                <H2>Install Metamask</H2>
-                <Button href="https://metamask.io/">Visit metamask.io</Button>
-              </Content>
-            </LineItem>
-          )}
-
-          {!props.state.isPhantomEnabled && (
-            <LineItem>
-              <Content>
-                <H2>Install Phantom</H2>
-                <Button href="https://phantom.app/">Visit phantom.app</Button>
-              </Content>
-            </LineItem>
-          )}
         </LayoutLeft>
         <LayoutRight>
-          {props.state.isMetamaskEnabled && window.ethereum.selectedAddress ? (
-            <Tip>Metamask ➝ {window.ethereum.selectedAddress}</Tip>
-          ) : null}
-
-          {props.state.isMetamaskEnabled && props.state.ethereum && (
-            <Tip>
-              Ethereum address ➝ {props.state.ethereum.address} has an entry in
-              this server's Postgres database.
-            </Tip>
-          )}
-
-          {props.state.isPhantomEnabled && props.state.solana && (
-            <Tip>
-              Solana address (Phantom public key) ➝ {props.state.solana.address}{" "}
-              has an entry in this server's Postgres database.
-            </Tip>
-          )}
 
           {props.viewer && props.viewer.data.verified && (
             <Tip>{props.viewer.email} is verified.</Tip>
