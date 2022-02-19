@@ -1,29 +1,28 @@
-# WWW-REACT-POSTGRES
+# JOGS - All Agile Really Needs
+### Start Local Dev environment
+If you are setting up for the first time, scroll down to "Setup".
 
-<img width="1239" alt="www-react-postgres" src="https://user-images.githubusercontent.com/310223/148035171-79958937-3aee-47b6-b182-0bbf9e246995.png">
+In one terminal, start the node server:
+```sh
+npm run dev
+```
 
-#### What is this for?
+In another, start up postgres:
+```sh
+postgres -D /usr/local/var/postgresql@11 -p 1334
+```
 
-This template is for making a good website or web application. I made it to kick off 2022!
 
-If you are a beginner and just want to make a simple React website with no database, try [next-sass](https://github.com/application-research/next-sass).
+# Technology
 
-#### Why would I use this?
-
-You want...
-
+### WWW-REACT-POSTGRES
+#### Sub-technologies
 - To use [React](https://reactjs.org/).
 - To write [SASS](https://sass-lang.com/), like the good old days.
 - To manage your own service secrets and not expose them to the client by using SSR from [https://nextjs.org/](NextJS) and `dotenv`.
 - To use Postgres 11 to manage local data or local authentication.
 - The minimum SEO optimal SEO metatags.
-- **[OPTIONAL]** To start with a [Google Authentication](https://github.com/googleapis/google-api-nodejs-client) example.
-- **[OPTIONAL]** To start with an example of "organizations", each organization is created with an e-mail's domain name.
-- **[OPTIONAL]** To authenticate your Ethereum addresses from [Metamask](https://metamask.io/) to build a DAPP or DAO. This example keeps a table of Ethereum addresses where you can store local information in the `jsonb` column.
-- **[OPTIONAL]** To authenticate your Solana address (public key) from [Phantom](https://phantom.app) to build a DAPP or DAO. This example also keeps a table of Solana addreses in the same way above.
-- Minimal code to get the job done for a production ready website.
-
-Will add support for [Filecoin](https://docs.filecoin.io), [NEAR](https://docs.near.org/docs/api/naj-quick-reference) and other networks as I develop the template.
+- To start with a [Google Authentication](https://github.com/googleapis/google-api-nodejs-client) example.
 
 ## Setup (MacOS)
 
@@ -187,7 +186,3 @@ For deploying your new website, I recommend any of the following choices:
 - [Fleek](https://fleek.co)
 - [Vercel](https://vercel.com/)
 - [Heroku](https://heroku.com)
-
-#### Questions?
-
-Contact [@wwwjim](https://twitter.com/wwwjim).

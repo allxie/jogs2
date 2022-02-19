@@ -13,7 +13,7 @@ console.log(`RUNNING: ${name} NODE_ENV=${environment}`);
 // SCRIPTS
 // --------------------------
 
-const dropUserTable = db.schema.dropTable("users").dropTable("sprints").dropTable("stories").dropTable("story_sprints");
+const dropUserTable = db.schema.dropTable("story_sprints").dropTable("sprints").dropTable("stories").dropTable("users");
 
 // --------------------------
 // RUN

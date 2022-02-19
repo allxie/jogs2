@@ -1,0 +1,37 @@
+.numberInput {
+  -webkit-appearance: none;
+  color: rgba(0, 0, 0, 0.8);
+  // background: rgba(0, 0, 0, 0.13);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 55px;
+  height: 48px;
+  border-radius: 0px;
+  font-size: 16px;
+  align-items: center;
+  text-align: center;
+  outline: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 0px;
+  transition: 200ms ease all;
+  padding: 0 7px 0 7px;
+  text-overflow: none;
+  white-space: nowrap;
+
+  &:focus {
+    &::placeholder {
+      opacity: 0;
+    }
+  }
+
+  &::placeholder {
+    opacity: .7;
+  }
+}
+.red {
+  background: #f2c7c7;
+}
+
+.green {
+  background: #c6d6be;
+}

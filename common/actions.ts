@@ -39,18 +39,26 @@ const deleteViewer = async () => {
     return window.location.reload();
   }
 
-  return alert(response.error);
 };
 
 const createStory = async ({title}) => {
   const body = {title}
-  let response = await Requests.post("/api/stories", body);
-  if (response.success) {
-    cookies.remove(Constants.SESSION_KEY);
-    return window.location.reload();
-  } else {
-    return alert(response.error);
+  // await new Promise((resolve) => setTimeout(resolve, 5000))
+  try {
+    return await Requests.post("/api/stories", body);
+  } catch (e) {
+    return { error: e }
   }
+}
+
+const updateStory = async ({title, points, value, status, id}) => {
+  const body = {title, points, value, status}
+  let response = await Requests.patch(`/api/stories/${id}`, body);
+}
+
+const deleteStory = async ({id}) => {
+  await Requests.del(`/api/stories/${id}`);
+  return window.location.reload();
 }
 
 export const execute = async (key: string, body?: any) => {
@@ -58,6 +66,8 @@ export const execute = async (key: string, body?: any) => {
   if (key === "SIGN_OUT") return await signOut();
   if (key === "VIEWER_DELETE_USER") return await deleteViewer();
   if (key === "CREATE_STORY") return await createStory(body);
+  if (key === "UPDATE_STORY") return await updateStory(body);
+  if (key === "DELETE_STORY") return await deleteStory(body);
 
   return alert(`There is no action: ${key}`);
 };

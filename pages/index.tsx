@@ -1,9 +1,6 @@
 import styles from "@components/index.module.scss";
 
 import * as React from "react";
-import * as Requests from "@common/requests";
-import * as Strings from "@common/strings";
-import * as Utilities from "@common/utilities";
 import * as NodeAuth from "@data/node-authentication";
 import * as NodeGoogle from "@data/node-google";
 
@@ -17,7 +14,7 @@ function IndexPage(props) {
 
   React.useEffect(() => {
     const load = async () => {
-
+      
       setState({
         ...state,
       });
@@ -36,6 +33,7 @@ function IndexPage(props) {
         viewer={props.viewer}
         googleURL={props.googleURL}
         state={state}
+        stories={props.stories}
         host={props.host}
       />
     </App>
@@ -45,12 +43,14 @@ function IndexPage(props) {
 export async function getServerSideProps(context) {
   const { viewer } = await NodeAuth.getViewer(context.req);
   const { googleURL } = await NodeGoogle.generateURL();
+  // const stories = await Requests.get('http://localhost:3005/api/stories');
 
   return {
     props: {
       viewer: viewer,
       host: context.req.headers.host,
       googleURL,
+      // stories
     },
   };
 }

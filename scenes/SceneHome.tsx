@@ -3,12 +3,14 @@ import * as Actions from "@common/actions";
 import * as Strings from "@common/strings";
 
 import styles from "@scenes/SceneHome.module.scss";
+import * as Requests from "@common/requests";
 
 import Header from "@components/Header";
 import Layout from "@components/Layout";
 import LayoutLeft from "@components/LayoutLeft";
 import LayoutRight from "@components/LayoutRight";
 import LineItem from "@components/LineItem";
+import Link from "next/link";
 import StatePreview from "@components/StatePreview";
 import Content from "@components/Content";
 import Input from "@components/Input";
@@ -43,28 +45,21 @@ function SceneHome(props) {
     <section className={styles.scene}>
       <Header>
         <Content>
-          <H1>www-react-postgres 0.1</H1>
+          <H1>Jogs Agile</H1>
         </Content>
       </Header>
       <Layout>
         <LayoutLeft>
-          {
-            <LineItem>
-              <Content>
-                <H2>Create Story</H2>
-                <Input
-                  autoComplete="off"
-                  value={state.title}
-                  placeholder="As a user..."
-                  name="title"
-                  onChange={(e) => handleChange(e, state, setState)}
-                />
-                <Button onClick={() => Actions.execute("CREATE_STORY", state)}>
-                  Create
-                </Button>
-              </Content>
-            </LineItem>
-          }
+          <LineItem>
+            <Link href="/current-sprint">
+              <a>Current Sprint</a>
+            </Link>
+          </LineItem>
+          <LineItem>
+            <Link href="/backlog">
+              <a>Backlog</a>
+            </Link>
+          </LineItem>
           {props.viewer && (
             <React.Fragment>
               <LineItem>

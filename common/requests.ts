@@ -30,7 +30,6 @@ export async function get(route: string, options = {}) {
     });
 
     const json = await response.json();
-    console.log(route, json);
     return json;
   } catch (e) {
     console.log(e);
@@ -41,9 +40,21 @@ export async function get(route: string, options = {}) {
 }
 
 export async function post(route: string, options = {}) {
+  const response = await fetch(route, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(options),
+  });
+
+  const json = await response.json();
+
+  return json;
+}
+
+export async function patch(route: string, options = {}) {
   try {
     const response = await fetch(route, {
-      method: "POST",
+      method: "PATCH",
       headers: getHeaders(),
       body: JSON.stringify(options),
     });
