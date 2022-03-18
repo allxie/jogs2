@@ -1,21 +1,21 @@
 import * as _ from 'lodash';
 
-import STATUSES from '@common/statusEnums'
+import { Status } from '@common/types/Status'
 import * as StoriesDao from '@root/data/dao/storiesDao';
 import { isFibonacci } from '@common/utilities';
-import { StoryType } from '@common/storyType';
+import { Story } from '@root/common/types/Story';
 
 
 type StoryPayloadType = {
   id?: string;
   value: number | null;
   points: number | null;
-  status: string;
+  status: Status;
   completed_at: string | null;
 }
 
-const _getSortedStoriesByPriority = (stories: StoryType[]): StoryType[] => {
-  return _.sortBy(stories, (story: StoryType) => {
+const _getSortedStoriesByPriority = (stories: Story[]): Story[] => {
+  return _.sortBy(stories, (story: Story) => {
     if(story.points && story.value) return story.value/story.points
     if(story.value) return story.value
     if(story.points) return 1 / story.points
@@ -39,13 +39,13 @@ const _setCompletedAt = async (body: StoryPayloadType, storyId:string) => {
   const existingStory = await StoriesDao.getStoryById(storyId);
 
   if(
-    existingStory.status !== STATUSES.DONE 
-    && body.status === STATUSES.DONE
+    existingStory.status !== 'Done' 
+    && body.status === 'Done'
   ) {
     body['completed_at'] = new Date().toISOString();
   } else if(
-    existingStory.status === STATUSES.DONE 
-    && body.status !== STATUSES.DONE
+    existingStory.status === 'Done' 
+    && body.status !== 'Done'
   ) {
     body['completed_at'] = null;
   }
@@ -63,13 +63,13 @@ const _validateStoryPayload = async (body: StoryPayloadType) => {
   }
 }
 
-export const getNonDeletedStories = async (): Promise<StoryType[]> => {
+export const getNonDeletedStories = async (): Promise<Story[]> => {
   const stories = await StoriesDao.getStories()
 
   return _getSortedStoriesByPriority(stories)
 }
 
-export const createStory = async (req: any): Promise<StoryType> => {
+export const createStory = async (req: any): Promise<Story> => {
   const {account, body} = req;
 
   _parseNumbers(body)

@@ -1,7 +1,6 @@
 import * as Requests from "@common/requests";
 import * as Constants from "@common/constants";
-import * as Strings from "@common/strings";
-
+import { Story } from '@common/types/Story'
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -41,7 +40,7 @@ const deleteViewer = async () => {
 
 };
 
-const createStory = async ({title}) => {
+const createStory = async (title: string) => {
   const body = {title}
   // await new Promise((resolve) => setTimeout(resolve, 5000))
   try {
@@ -51,12 +50,12 @@ const createStory = async ({title}) => {
   }
 }
 
-const updateStory = async ({title, points, value, status, id}) => {
+const updateStory = async ({title, points, value, status, id}: Story) => {
   const body = {title, points, value, status}
   let response = await Requests.patch(`/api/stories/${id}`, body);
 }
 
-const deleteStory = async ({id}) => {
+const deleteStory = async (id: string) => {
   await Requests.del(`/api/stories/${id}`);
   return window.location.reload();
 }

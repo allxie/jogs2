@@ -1,18 +1,7 @@
-import * as StoriesService from "@data/services/storiesService";
+import * as StoriesService from '@data/services/storiesService';
+import { Req, StoryRes } from '@common/types/Server'
 
-type Req = { method: any; }
-type Res = { 
-  json: (
-    arg0: { 
-      id: string; 
-      value: number | null;
-      points: number | null;
-      status: string;
-    }[]
-  ) => void;
-}
-
-export default async function stories(req: Req, res: Res) {
+export default async function stories(req: Req, res: StoryRes) {
   switch(req.method) {
     case 'PATCH':
       res.json(await StoriesService.updateStory(req));

@@ -1,5 +1,4 @@
 import * as React from "react";
-import Menu, { Item, SubMenu, MenuItem } from 'rc-menu';
 import 'rc-menu/assets/index.css';
 import * as _ from 'lodash';
 
@@ -11,13 +10,23 @@ import NumberInput from "@components/NumberInput";
 import Button from "@components/Button";
 import StoryLayout from "@components/StoryLayout";
 import statusEnums from '@common/statusEnums';
+import { Story } from '@common/types/Story';
 
-const handleChange = (e, storyState, setState) => {
+const handleChange = (e: any, storyState: any, setState: any) => {
+  if(e.target.value === '') {
+    if(['points', 'value'].includes(e.target.name)) {
+      e.target.value = null;
+    }
+  }
+
   Actions.execute("UPDATE_STORY", _.defaults({[e.target.name]: e.target.value}, {...storyState}))
   setState({...storyState, [e.target.name]: e.target.value});
 };
 
-export default ({story}) => {
+interface StoryParams {
+  story: Story;
+}
+export default ({story} :StoryParams) => {
   const [storyState, setStoryState] = React.useState(story);
   return (
     <StoryLayout>
@@ -26,7 +35,7 @@ export default ({story}) => {
           defaultValue={story.title}
           placeholder="As a user..."
           name="title"
-          onChange={(e) => handleChange(e, storyState, setStoryState)}
+          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
         />
         <NumberInput
           color="green"
@@ -34,7 +43,7 @@ export default ({story}) => {
           defaultValue={story.value}
           placeholder="value"
           name="value"
-          onChange={(e) => handleChange(e, storyState, setStoryState)}
+          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
         />
         <NumberInput
           color="red"
@@ -42,23 +51,23 @@ export default ({story}) => {
           defaultValue={story.points}
           placeholder="size"
           name="points"
-          onChange={(e) => handleChange(e, storyState, setStoryState)}
+          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
         />
         <Select
           autoComplete="off"
           defaultValue={story.status}
           name="status"
           list="statuses"
-          onChange={(e) => handleChange(e, storyState, setStoryState)}
+          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
         >
           {
-            Object.keys(statusEnums).map((status) => {
+            statusEnums.map((status) => {
               return (
                 <option
-                  value={statusEnums[status]}
-                  selected={story.status===statusEnums[status]}
+                  value={status}
+                  selected={story.status===status}
                 >
-                  {statusEnums[status]}
+                  {status}
                 </option>  
               )
             })
@@ -70,7 +79,7 @@ export default ({story}) => {
             <Item>2-1</Item>
           </SubMenu>
         </Menu> */}
-        <Trash onClick={() => Actions.execute("DELETE_STORY", storyState)}/>
+        <Trash onClick={() => Actions.execute("DELETE_STORY", storyState.id)}/>
       </StoryLayout>
   )
 }

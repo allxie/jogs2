@@ -13,7 +13,7 @@ import Header from "@components/Header";
 import H1 from "@components/H1";
 import StoryList from "@components/StoryList";
 import * as Requests from "@common/requests";
-import { StoryType } from '@common/storyType';
+import { Story } from '@common/types/Story';
 
 export async function getServerSideProps() {
   const stories = await Requests.get('http://localhost:3005/api/stories');
@@ -25,7 +25,7 @@ export async function getServerSideProps() {
   };
 }
 
-export default function Backlog(props: { stories: StoryType[]; }) {
+export default function Backlog(props: { stories: Story[]; }) {
   const [createStoryState, setCreateStoryState] = React.useState({
     title: "",
     isSubmitting: false,
@@ -46,7 +46,7 @@ export default function Backlog(props: { stories: StoryType[]; }) {
       submitError: ""
     })
   
-    const response = await Actions.execute("CREATE_STORY", createStoryState)
+    const response = await Actions.execute("CREATE_STORY", createStoryState.title)
     if(response.error) {
       setCreateStoryState({
         ...createStoryState,

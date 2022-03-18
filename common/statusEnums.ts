@@ -1,9 +1,11 @@
-const STATUSES = {
-  TO_DO: 'To Do',
-  IN_PROGRESS: 'In Progress',
-  DONE: 'Done',
-  BLOCKED: 'Blocked',
-  REFUSED: 'Refused'
-};
+import { Status } from '@common/types/Status'
 
-export default STATUSES;
+const statusEnum = [
+  'To Do',
+  'In Progress',
+  'Done',
+  'Blocked',
+  'Refused'
+] as Status[]
+
+export default statusEnum

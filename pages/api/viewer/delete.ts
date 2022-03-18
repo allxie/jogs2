@@ -1,11 +1,12 @@
 import * as Env from "@data/environment";
 import * as Data from "@data/node-data";
-import * as Strings from "@common/strings";
 import * as AuthUtilities from "@common/utilities-authentication";
+
+import { Req } from '@common/types/Server'
 
 import JWT from "jsonwebtoken";
 
-export default async function deleteViewer(req, res) {
+export default async function deleteViewer(req: Req, res: any) {
   const authorization = AuthUtilities.parseAuthHeader(
     req.headers.authorization
   );
