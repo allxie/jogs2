@@ -1,21 +1,26 @@
-import * as Data from "@data/node-data";
-import * as Server from "@common/server";
 import * as StoriesService from "@data/services/storiesService";
 
-export default async function stories(req, res) {
-  await Server.cors(req, res);
+type Req = { method: any; }
+type Res = { 
+  json: (
+    arg0: { 
+      id: string; 
+      value: number | null;
+      points: number | null;
+      status: string;
+    }[]
+  ) => void;
+}
 
+export default async function stories(req: Req, res: Res) {
   switch(req.method) {
     case 'GET':
-      const stories = await StoriesService.getNonDeletedStories();
-      console.log(stories)
-      res.json(stories);
+      const getStories = await StoriesService.getNonDeletedStories();
+      res.json(getStories);
       break;
     case 'POST':
-      res.json(await StoriesService.createStory(req));
-      break;
-    case 'DELETE':
-    // code block
+      const postStory = await StoriesService.createStory(req)
+      res.json([postStory]);
       break;
     default:
       // code block

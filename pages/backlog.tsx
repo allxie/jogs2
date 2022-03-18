@@ -6,7 +6,6 @@ import Input from "@components/Input";
 import Button from "@components/Button";
 import Layout from "@components/Layout";
 import LayoutLeft from "@components/LayoutLeft";
-import LayoutRight from "@components/LayoutRight";
 import LineItem from "@components/LineItem";
 import Content from "@components/Content";
 import H2 from "@components/H2";
@@ -14,8 +13,9 @@ import Header from "@components/Header";
 import H1 from "@components/H1";
 import StoryList from "@components/StoryList";
 import * as Requests from "@common/requests";
+import { StoryType } from '@common/storyType';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const stories = await Requests.get('http://localhost:3005/api/stories');
 
   return {
@@ -25,24 +25,21 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Backlog(props) {
-  console.log("rerendering backlog")
+export default function Backlog(props: { stories: StoryType[]; }) {
   const [createStoryState, setCreateStoryState] = React.useState({
     title: "",
     isSubmitting: false,
     submitError: ""
   });
   const [storyListState, setStoryListState] = React.useState(props.stories)
-  console.log("create story state in backlog, ", storyListState)
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setCreateStoryState({ ...createStoryState,
       [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = async() => {
-    console.log("submitted!")
     setCreateStoryState({
       ...createStoryState,
       isSubmitting: true,
@@ -50,7 +47,6 @@ export default function Backlog(props) {
     })
   
     const response = await Actions.execute("CREATE_STORY", createStoryState)
-    console.log("RESPONSE< ", response)
     if(response.error) {
       setCreateStoryState({
         ...createStoryState,
@@ -98,7 +94,7 @@ export default function Backlog(props) {
                   value={createStoryState.title}
                   placeholder="As a user..."
                   name="title"
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e: any) => handleChange(e)}
                 />
                 <Button onClick={() => handleSubmit()} disabled={createStoryState.isSubmitting}>
                   Create

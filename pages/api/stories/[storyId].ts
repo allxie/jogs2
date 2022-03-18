@@ -1,17 +1,23 @@
-import * as Data from "@data/node-data";
-import * as Stories from "@root/data/dao/storiesDao";
-import * as Server from "@common/server";
 import * as StoriesService from "@data/services/storiesService";
-// NOTE(jim):
-// CORS API example.
-export default async function stories(req, res) {
-  await Server.cors(req, res);
+
+type Req = { method: any; }
+type Res = { 
+  json: (
+    arg0: { 
+      id: string; 
+      value: number | null;
+      points: number | null;
+      status: string;
+    }[]
+  ) => void;
+}
+
+export default async function stories(req: Req, res: Res) {
   switch(req.method) {
     case 'PATCH':
       res.json(await StoriesService.updateStory(req));
       break;
     case 'DELETE':
-      console.log("TRYING TO DELETE")
       res.json(await StoriesService.deleteStory(req));
       break;
     default:
