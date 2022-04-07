@@ -6,8 +6,8 @@ import {Story as StoryType} from '@common/types/Story';
 import * as Actions from '@common/actions';
 
 type StoryProps = {
-  storyListState: StoryType[]
-  setStoryListState: any
+  storyListState: StoryType[];
+  setStoryListState;
 }
 
 export default ({storyListState, setStoryListState}: StoryProps) => {

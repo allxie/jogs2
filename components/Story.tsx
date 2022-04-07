@@ -17,8 +17,8 @@ import styles from "@components/Story.module.scss";
 
 interface StoryParams {
   story: Story;
-  handleStoryDelete: any;
-  handleStoryChange: any;
+  handleStoryDelete;
+  handleStoryChange;
 }
 
 export default ({story, handleStoryDelete, handleStoryChange}: StoryParams) => {
@@ -58,7 +58,7 @@ export default ({story, handleStoryDelete, handleStoryChange}: StoryParams) => {
           autoComplete="off"
           name="status"
           list="statuses"
-          onChange={(e: any) => handleStoryChange(e, story.id)}
+          onChange={(e) => handleStoryChange(e, story.id)}
         >
           {
             statusEnums.map((status, index) => {

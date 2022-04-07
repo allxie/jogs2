@@ -1,4 +1,4 @@
-export const isEmpty = (string: any) => {
+export const isEmpty = (string: string) => {
   return !string || !string.toString().trim();
 };
 

@@ -29,7 +29,7 @@ export const getStories = async () => {
         .from("stories")
         .whereNull('deleted_at')
     },
-    errorFn: async (e: any) => {
+    errorFn: async (e) => {
       console.log("error:", e)
       return {
         error: "GET_STORIES",
@@ -62,7 +62,7 @@ export const updateStory = async (body, id: string) => {
     queryFn: async () => {
       return DB('stories').where({id}).update(body).returning('*')      
     },
-    errorFn: async (e: any) => {
+    errorFn: async (e) => {
       return {
         error: "UPDATE_STORY",
         source: e,

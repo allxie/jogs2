@@ -58,7 +58,7 @@ export const getNonDeletedStories = async (): Promise<Story[]> => {
   return sortByPriority(stories)
 }
 
-export const createStory = async (req: any): Promise<Story> => {
+export const createStory = async (req): Promise<Story> => {
   const {account, body} = req;
 
   _parseNumbers(body)
@@ -67,7 +67,7 @@ export const createStory = async (req: any): Promise<Story> => {
   return StoriesDao.createStory(body);
 }
 
-export const updateStory = async (req: any) => {
+export const updateStory = async (req) => {
   const {account, body, query: { storyId } } = req;
 
   _parseNumbers(body)
@@ -78,7 +78,7 @@ export const updateStory = async (req: any) => {
   return StoriesDao.updateStory(body, storyId);
 }
 
-export const deleteStory = async (req: any) => {
+export const deleteStory = async (req) => {
   const {account, query: { storyId } } = req;
 
   return StoriesDao.updateStory({'deleted_at': new Date().toISOString()}, storyId);
