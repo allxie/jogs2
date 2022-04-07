@@ -1,7 +1,7 @@
 import * as StoriesService from "@data/services/storiesService";
-import { Req, StoryRes } from '@common/types/Server'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function stories(req: Req, res: StoryRes) {
+export default async function stories(req: NextApiRequest, res: NextApiResponse) {
   switch(req.method) {
     case 'GET':
       const getStories = await StoriesService.getNonDeletedStories();

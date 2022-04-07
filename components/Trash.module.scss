@@ -7,11 +7,11 @@
   margin: 0;
   vertical-align: middle;
   color: rgba(0, 0, 0, 0.7);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgb(230, 230, 230);
   font-size: 20px;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgb(205, 205, 205);
     cursor: pointer;
   }
 }

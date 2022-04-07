@@ -52,12 +52,19 @@ const createStory = async (title: string) => {
 
 const updateStory = async ({title, points, value, status, id}: Story) => {
   const body = {title, points, value, status}
-  let response = await Requests.patch(`/api/stories/${id}`, body);
+  return Requests.patch(`/api/stories/${id}`, body);
 }
 
 const deleteStory = async (id: string) => {
   await Requests.del(`/api/stories/${id}`);
-  return window.location.reload();
+}
+
+const createSprint = async () => {
+  try {
+    return await Requests.post("/api/sprints");
+  } catch (e) {
+    return { error: e }
+  }
 }
 
 export const execute = async (key: string, body?: any) => {

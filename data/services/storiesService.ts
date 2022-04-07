@@ -4,7 +4,7 @@ import { Status } from '@common/types/Status'
 import * as StoriesDao from '@root/data/dao/storiesDao';
 import { isFibonacci } from '@common/utilities';
 import { Story } from '@root/common/types/Story';
-
+import { sortByPriority } from '@common/sortStories';
 
 type StoryPayloadType = {
   id?: string;
@@ -14,17 +14,7 @@ type StoryPayloadType = {
   completed_at: string | null;
 }
 
-const _getSortedStoriesByPriority = (stories: Story[]): Story[] => {
-  return _.sortBy(stories, (story: Story) => {
-    if(story.points && story.value) return story.value/story.points
-    if(story.value) return story.value
-    if(story.points) return 1 / story.points
-    return 0
-  }).reverse()
-}
-
 const _parseNumbers = (body: StoryPayloadType) => {
-  console.log(body)
   if(!_.isNull(body.value) && !isNaN(body.value)) {
     body.value = Number(body.value)
   }
@@ -32,7 +22,6 @@ const _parseNumbers = (body: StoryPayloadType) => {
   if(!_.isNull(body.points) && !isNaN(body.points)) {
     body.points = Number(body.points)
   }
-  console.log(body)
 }
 
 const _setCompletedAt = async (body: StoryPayloadType, storyId:string) => {
@@ -52,7 +41,7 @@ const _setCompletedAt = async (body: StoryPayloadType, storyId:string) => {
 }
 
 const _validateStoryPayload = async (body: StoryPayloadType) => {
-  if(_.isNumber(body.value) && body.value >= 0) {
+  if(_.isNumber(body.value) && body.value <= 0) {
     console.log("body value", body.value)
     throw new Error('"Value" must be a positive integer.') 
   }
@@ -66,7 +55,7 @@ const _validateStoryPayload = async (body: StoryPayloadType) => {
 export const getNonDeletedStories = async (): Promise<Story[]> => {
   const stories = await StoriesDao.getStories()
 
-  return _getSortedStoriesByPriority(stories)
+  return sortByPriority(stories)
 }
 
 export const createStory = async (req: any): Promise<Story> => {
@@ -74,6 +63,7 @@ export const createStory = async (req: any): Promise<Story> => {
 
   _parseNumbers(body)
   _validateStoryPayload(body);
+  // @TODO: throwing an error doesn't seem to set off a response
   return StoriesDao.createStory(body);
 }
 

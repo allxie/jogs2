@@ -1,71 +1,71 @@
 import * as React from "react";
 import 'rc-menu/assets/index.css';
+import Menu, { MenuItem } from 'rc-menu';
+
 import * as _ from 'lodash';
 
-import * as Actions from "@common/actions";
 import Input from "@components/Input";
 import Select from "@components/Select";
-import Trash from "@components/Trash";
 import NumberInput from "@components/NumberInput";
-import Button from "@components/Button";
+import MenuButton from "@components/MenuButton";
 import StoryLayout from "@components/StoryLayout";
 import statusEnums from '@common/statusEnums';
 import { Story } from '@common/types/Story';
-
-const handleChange = (e: any, storyState: any, setState: any) => {
-  if(e.target.value === '') {
-    if(['points', 'value'].includes(e.target.name)) {
-      e.target.value = null;
-    }
-  }
-
-  Actions.execute("UPDATE_STORY", _.defaults({[e.target.name]: e.target.value}, {...storyState}))
-  setState({...storyState, [e.target.name]: e.target.value});
-};
+import { faEllipsisVertical, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styles from "@components/Story.module.scss";
 
 interface StoryParams {
   story: Story;
+  handleStoryDelete: any;
+  handleStoryChange: any;
 }
-export default ({story} :StoryParams) => {
-  const [storyState, setStoryState] = React.useState(story);
+
+export default ({story, handleStoryDelete, handleStoryChange}: StoryParams) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+
   return (
     <StoryLayout>
         <Input
+          key={`${story.id}_title`}
           autoComplete="off"
           defaultValue={story.title}
           placeholder="As a user..."
           name="title"
-          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
+          onChange={(e) => handleStoryChange(e, story.id)}
         />
         <NumberInput
+          key={`${story.id}_value`}
           color="green"
           autoComplete="off"
           defaultValue={story.value}
           placeholder="value"
           name="value"
-          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
+          onChange={(e) => handleStoryChange(e, story.id)}
         />
         <NumberInput
+          key={`${story.id}_size`}
           color="red"
           autoComplete="off"
           defaultValue={story.points}
           placeholder="size"
           name="points"
-          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
+          onChange={(e) => handleStoryChange(e, story.id)}
         />
         <Select
-          autoComplete="off"
+          key={`${story.id}_status`}
           defaultValue={story.status}
+          autoComplete="off"
           name="status"
           list="statuses"
-          onChange={(e: any) => handleChange(e, storyState, setStoryState)}
+          onChange={(e: any) => handleStoryChange(e, story.id)}
         >
           {
-            statusEnums.map((status) => {
+            statusEnums.map((status, index) => {
               return (
                 <option
+                  key={index}
                   value={status}
-                  selected={story.status===status}
                 >
                   {status}
                 </option>  
@@ -73,13 +73,29 @@ export default ({story} :StoryParams) => {
             })
           }
         </Select>
-        {/* <Menu>
-          <Item>1</Item>
-          <SubMenu title="2">
-            <Item>2-1</Item>
-          </SubMenu>
-        </Menu> */}
-        <Trash onClick={() => Actions.execute("DELETE_STORY", storyState.id)}/>
+        <div>
+          <MenuButton onClick={() => {
+            setIsMenuOpen(!isMenuOpen)
+          }}>
+            <FontAwesomeIcon icon={faEllipsisVertical}/>
+          </MenuButton>
+          { isMenuOpen && 
+            <div className={styles.storyMenuOuterContainer}>
+              <div className={styles.storyMenuInnerContainer}>
+                <Menu>
+                  <MenuItem>
+                    <MenuButton onClick={(e) => handleStoryDelete(e, story.id)}>
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </MenuButton>
+                  </MenuItem>
+                  <MenuItem>
+                    Add to Sprint
+                  </MenuItem>
+                </Menu>
+              </div>
+            </div>
+          }      
+        </div>  
       </StoryLayout>
   )
 }
