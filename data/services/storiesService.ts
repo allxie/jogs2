@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import type { NextApiRequest } from 'next'
 
 import { Status } from '@common/types/Status'
 import * as StoriesDao from '@root/data/dao/storiesDao';
@@ -58,7 +59,7 @@ export const getNonDeletedStories = async (): Promise<Story[]> => {
   return sortByPriority(stories)
 }
 
-export const createStory = async (req): Promise<Story> => {
+export const createStory = async (req: NextApiRequest): Promise<Story> => {
   const {account, body} = req;
 
   _parseNumbers(body)
@@ -67,7 +68,7 @@ export const createStory = async (req): Promise<Story> => {
   return StoriesDao.createStory(body);
 }
 
-export const updateStory = async (req) => {
+export const updateStory = async (req: NextApiRequest) => {
   const {account, body, query: { storyId } } = req;
 
   _parseNumbers(body)
@@ -78,7 +79,7 @@ export const updateStory = async (req) => {
   return StoriesDao.updateStory(body, storyId);
 }
 
-export const deleteStory = async (req) => {
+export const deleteStory = async (req: NextApiRequest) => {
   const {account, query: { storyId } } = req;
 
   return StoriesDao.updateStory({'deleted_at': new Date().toISOString()}, storyId);
