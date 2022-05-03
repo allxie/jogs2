@@ -1,11 +1,12 @@
 .storyLayout {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: space-between;
   width: 100%;
   max-width: 1120px;
   margin: 0 auto 0 auto;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  
 
   @media (max-width: 728px) {
     display: block;

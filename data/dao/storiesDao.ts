@@ -1,7 +1,8 @@
 import DB from "@root/db";
 import {runQuery} from "@data/runQuery";
+import { Story } from '@common/types/Story';
 
-export const getStoryById = async (storyId) => {
+export const getStoryById = async (storyId: string) => {
   return await runQuery({
     label: "GET_STORY",
     queryFn: async () => {
@@ -29,7 +30,7 @@ export const getStories = async () => {
         .whereNull('deleted_at')
     },
     errorFn: async (e) => {
-      console.log(e)
+      console.log("error:", e)
       return {
         error: "GET_STORIES",
         source: e,
@@ -38,7 +39,28 @@ export const getStories = async () => {
   });
 }
 
-export const createStory = async (body) => {
+export const getStoriesBySprint = async (sprintId: string | string[]) => {
+  return await runQuery({
+    label: "GET_STORIES_BY_SPRINT_ID",
+    queryFn: async () => {
+      return await DB.select("*")
+        .from("stories")
+        .innerJoin('story_sprints', 'stories.id', 'story_sprints.story_id')
+        .where('story_sprints.sprint_id', sprintId)
+        .whereNull('stories.deleted_at')
+        .whereNull('story_sprints.deleted_at')
+    },
+    errorFn: async (e) => {
+      console.log("error:", e)
+      return {
+        error: "GET_STORIES",
+        source: e,
+      };
+    },
+  });
+}
+
+export const createStory = async (body: Story) => {
   return await runQuery({
     label: "CREATE_STORY",
     queryFn: async () => {
@@ -53,9 +75,7 @@ export const createStory = async (body) => {
   });
 }
 
-export const updateStory = async (body, id) => {
-  console.log("ID ", id)
-  console.log("body ", body)
+export const updateStory = async (body, id: string) => {
   return await runQuery({
     label: "UPDATE_STORY",
     queryFn: async () => {

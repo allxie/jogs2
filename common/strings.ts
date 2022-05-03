@@ -1,8 +1,8 @@
-export const isEmpty = (string: any) => {
+export const isEmpty = (string: string) => {
   return !string || !string.toString().trim();
 };
 
-export const pluralize = (text, count) => {
+export const pluralize = (text: string, count: number) => {
   return count > 1 || count === 0 ? `${text}s` : text;
 };
 
@@ -14,7 +14,7 @@ export const capitalizeFirstLetter = (word: string): string => {
   return word.charAt(0).toUpperCase() + word.substring(1);
 };
 
-export const elide = (text, length = 140, emptyState = "...") => {
+export const elide = (text: string, length = 140, emptyState = "...") => {
   if (isEmpty(text)) {
     return emptyState;
   }
@@ -26,7 +26,7 @@ export const elide = (text, length = 140, emptyState = "...") => {
   return `${text.substring(0, length)}...`;
 };
 
-export const toDate = (data) => {
+export const toDate = (data: string) => {
   const date = new Date(data);
   return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 };

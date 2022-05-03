@@ -52,21 +52,40 @@ const createStory = async (title: string) => {
 
 const updateStory = async ({title, points, value, status, id}: Story) => {
   const body = {title, points, value, status}
-  let response = await Requests.patch(`/api/stories/${id}`, body);
+  return Requests.patch(`/api/stories/${id}`, body);
 }
 
 const deleteStory = async (id: string) => {
   await Requests.del(`/api/stories/${id}`);
-  return window.location.reload();
+}
+
+const createSprint = async () => {
+  try {
+    return await Requests.post("/api/sprints");
+  } catch (e) {
+    return { error: e }
+  }
+}
+
+const addStoryToSprint = async({storyId, sprintId}) => {
+  try {
+    return await Requests.post(`/api/sprints/${sprintId}/stories/${storyId}`);
+  } catch (e) {
+    return { error: e }
+  }
 }
 
 export const execute = async (key: string, body?: any) => {
   if (key === "SIGN_IN") return await signIn(body);
   if (key === "SIGN_OUT") return await signOut();
   if (key === "VIEWER_DELETE_USER") return await deleteViewer();
+
   if (key === "CREATE_STORY") return await createStory(body);
   if (key === "UPDATE_STORY") return await updateStory(body);
   if (key === "DELETE_STORY") return await deleteStory(body);
+
+  if (key === "CREATE_SPRINT") return await createSprint();
+  if (key === "ADD_STORY_TO_SPRINT") return await addStoryToSprint(body);
 
   return alert(`There is no action: ${key}`);
 };

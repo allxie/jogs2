@@ -6,7 +6,7 @@ import { Req } from '@common/types/Server'
 
 import JWT from "jsonwebtoken";
 
-export default async function deleteViewer(req: Req, res: any) {
+export default async function deleteViewer(req: Req, res) {
   const authorization = AuthUtilities.parseAuthHeader(
     req.headers.authorization
   );

@@ -1,7 +1,8 @@
-import * as Constants from "@common/constants";
-import * as Strings from "@common/strings";
+import * as Constants from '@common/constants';
+import * as Strings from '@common/strings';
+import { Req } from '@common/types/Server';
 
-export const getToken = (req) => {
+export const getToken = (req: Req) => {
   if (Strings.isEmpty(req.headers.cookie)) {
     return null;
   }
@@ -9,7 +10,7 @@ export const getToken = (req) => {
   return req.headers.cookie.replace(Constants.SESSION_KEY_REGEX, "$1");
 };
 
-export const parseAuthHeader = (value) => {
+export const parseAuthHeader = (value: string) => {
   if (typeof value !== "string") {
     return null;
   }
