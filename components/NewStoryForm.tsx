@@ -44,7 +44,6 @@ export default ({storyListState, setStoryListState}: NewStoryFormProps) => {
         isSubmitting: false,
       })
     } else {
-      console.log(response)
       setStoryListState([...storyListState, ...response[0]])
       setCreateStoryState({
         isSubmitting: false,

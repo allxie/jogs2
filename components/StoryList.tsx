@@ -8,9 +8,10 @@ import * as Actions from '@common/actions';
 type StoryProps = {
   storyListState: StoryType[];
   setStoryListState;
+  sprintsState;
 }
 
-export default ({storyListState, setStoryListState}: StoryProps) => {
+export default ({storyListState, setStoryListState, sprintsState}: StoryProps) => {
 
   const handleStoryDelete = (e, id: string) => {
     e.preventDefault()
@@ -49,6 +50,7 @@ export default ({storyListState, setStoryListState}: StoryProps) => {
             notKey={index}
             handleStoryDelete={handleStoryDelete}
             handleStoryChange={handleStoryChange}
+            sprintsState={sprintsState}
           />
         )
       })

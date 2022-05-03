@@ -39,6 +39,27 @@ export const getStories = async () => {
   });
 }
 
+export const getStoriesBySprint = async (sprintId: string | string[]) => {
+  return await runQuery({
+    label: "GET_STORIES_BY_SPRINT_ID",
+    queryFn: async () => {
+      return await DB.select("*")
+        .from("stories")
+        .innerJoin('story_sprints', 'stories.id', 'story_sprints.story_id')
+        .where('story_sprints.sprint_id', sprintId)
+        .whereNull('stories.deleted_at')
+        .whereNull('story_sprints.deleted_at')
+    },
+    errorFn: async (e) => {
+      console.log("error:", e)
+      return {
+        error: "GET_STORIES",
+        source: e,
+      };
+    },
+  });
+}
+
 export const createStory = async (body: Story) => {
   return await runQuery({
     label: "CREATE_STORY",
@@ -55,8 +76,6 @@ export const createStory = async (body: Story) => {
 }
 
 export const updateStory = async (body, id: string) => {
-  console.log("ID ", id)
-  console.log("body ", body)
   return await runQuery({
     label: "UPDATE_STORY",
     queryFn: async () => {

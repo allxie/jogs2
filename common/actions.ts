@@ -67,13 +67,25 @@ const createSprint = async () => {
   }
 }
 
+const addStoryToSprint = async({storyId, sprintId}) => {
+  try {
+    return await Requests.post(`/api/sprints/${sprintId}/stories/${storyId}`);
+  } catch (e) {
+    return { error: e }
+  }
+}
+
 export const execute = async (key: string, body?: any) => {
   if (key === "SIGN_IN") return await signIn(body);
   if (key === "SIGN_OUT") return await signOut();
   if (key === "VIEWER_DELETE_USER") return await deleteViewer();
+
   if (key === "CREATE_STORY") return await createStory(body);
   if (key === "UPDATE_STORY") return await updateStory(body);
   if (key === "DELETE_STORY") return await deleteStory(body);
+
+  if (key === "CREATE_SPRINT") return await createSprint();
+  if (key === "ADD_STORY_TO_SPRINT") return await addStoryToSprint(body);
 
   return alert(`There is no action: ${key}`);
 };

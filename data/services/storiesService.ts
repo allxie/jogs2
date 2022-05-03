@@ -59,6 +59,13 @@ export const getNonDeletedStories = async (): Promise<Story[]> => {
   return sortByPriority(stories)
 }
 
+export const getStoriesBySprint = async(req: NextApiRequest): Promise<Story[]> => {
+  const {query: { sprintId } } = req;
+
+  const stories = await StoriesDao.getStoriesBySprint(sprintId)
+  return sortByPriority(stories)
+}
+
 export const createStory = async (req: NextApiRequest): Promise<Story> => {
   const {account, body} = req;
 

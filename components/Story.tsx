@@ -14,6 +14,7 @@ import { Story } from '@common/types/Story';
 import { faEllipsisVertical, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from "@components/Story.module.scss";
+import * as Actions from '@common/actions';
 
 interface StoryParams {
   story: Story;
@@ -21,8 +22,13 @@ interface StoryParams {
   handleStoryChange;
 }
 
-export default ({story, handleStoryDelete, handleStoryChange}: StoryParams) => {
+export default ({story, sprintsState, handleStoryDelete, handleStoryChange}: StoryParams) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [isSprintMenuOpen, setIsSprintMenuOpen] = React.useState(false)
+
+  const addStoryToSprint = (event, storyId: string, sprintId: string) => {
+    Actions.execute("ADD_STORY_TO_SPRINT", {storyId, sprintId})
+  }
 
   return (
     <StoryLayout>
@@ -83,13 +89,35 @@ export default ({story, handleStoryDelete, handleStoryChange}: StoryParams) => {
             <div className={styles.storyMenuOuterContainer}>
               <div className={styles.storyMenuInnerContainer}>
                 <Menu>
+                  <MenuItem onClick={() => {
+                    setIsSprintMenuOpen(!isSprintMenuOpen)
+                  }}>
+                    Add to Sprint
+                    { isSprintMenuOpen &&
+                      <Menu>
+                        {
+                          sprintsState.map((sprint, index) => {
+                            return (
+                              <MenuItem
+                                key={index}
+                                value={status}
+                              >
+                                <MenuButton 
+                                  onClick={(e) => addStoryToSprint(e, story.id, sprint.id)}
+                                >
+                                  {sprint.name}
+                                </MenuButton>
+                              </MenuItem>  
+                            )
+                          })
+                        }
+                      </Menu>
+                    }
+                  </MenuItem>
                   <MenuItem>
                     <MenuButton onClick={(e) => handleStoryDelete(e, story.id)}>
                       <FontAwesomeIcon icon={faTrashCan} />
                     </MenuButton>
-                  </MenuItem>
-                  <MenuItem>
-                    Add to Sprint
                   </MenuItem>
                 </Menu>
               </div>

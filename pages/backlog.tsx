@@ -67,7 +67,7 @@ export default function Backlog(props: { stories: Story[]; sprints: Sprint[]}) {
                 <Button onClick={sortStories}>
                   <FontAwesomeIcon icon={faArrowDown19} />
                 </Button>
-                <StoryList storyListState={storyListState} setStoryListState={setStoryListState} ></StoryList>
+                <StoryList storyListState={storyListState} setStoryListState={setStoryListState} sprintsState={sprintState}></StoryList>
               </Content>
             </LineItem>
           }
