@@ -6,6 +6,10 @@ export const runQuery = async ({ queryFn, errorFn, label }) => {
     response = await errorFn(e);
   }
 
-  console.log("[ database-query ]", { query: label });
-  return JSON.parse(JSON.stringify(response));
+  if(response) {
+    console.log("[ database-query ]", { query: label });
+    return JSON.parse(JSON.stringify(response));
+  } else {
+    return null
+  }
 };

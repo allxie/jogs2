@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function sprints(req: NextApiRequest, res: NextApiResponse) {
   switch(req.method) {
     case 'GET':
-      const getSprints = await SprintsService.getSprints();
+      const getSprints = await SprintsService.getSprints(req);
       res.json(getSprints);
       break;
     case 'POST':
