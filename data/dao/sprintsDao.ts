@@ -1,5 +1,6 @@
 import DB from "@root/db";
 import {runQuery} from "@data/runQuery";
+import moment from 'moment';
 
 export const getSprints = async () => {
   return await runQuery({
@@ -19,13 +20,14 @@ export const getSprints = async () => {
 }
 
 export const getCurrentSprint = async () => {
+  const now = moment().toISOString()
   return await runQuery({
     label: "GET_SPRINT_BY_ID",
     queryFn: async () => {
       return await DB.select("*")
         .from("sprints")
         .whereNull('deleted_at')
-        .whereNull('ends_at')
+        .where('ends_at', '>', now)
         .first()
     },
     errorFn: async (e) => {

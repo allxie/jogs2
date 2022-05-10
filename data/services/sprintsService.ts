@@ -4,8 +4,12 @@ import * as SprintsDao from '@root/data/dao/sprintsDao';
 import { Sprint } from '@root/common/types/Sprint';
 import moment from 'moment';
 
-export const getSprints = async(): Promise<Sprint[]> => {
-  return SprintsDao.getSprints()
+export const getSprints = async(req: NextApiRequest): Promise<Sprint[]> => {
+  if(req.query.current) {
+    return SprintsDao.getCurrentSprint()
+  } else {
+    return SprintsDao.getSprints()
+  }
 }
 
 export const getCurrentSprint = async(): Promise<Sprint> => {
